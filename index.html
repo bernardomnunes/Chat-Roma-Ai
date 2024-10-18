@@ -9,6 +9,35 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      #message-container {
+        list-style-type: none;
+        padding:0;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .message {
+        padding:10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        max-width: 70%;
+        clear:both;
+      }
+
+      .user-message {
+        background-color: #dcf8c6;
+        float:right;
+        text-align: right;
+      }
+
+      .user-message {
+        background-color: #f1f1f1;
+        float:left;
+        text-align: left;
+      }
+
+    </style>
   </head>
 
   <body>
@@ -48,14 +77,20 @@
     socket.on("message", (msg) => {
       console.log(msg);
       const ul = document.querySelector("ul");
-      ul.innerHTML += `<li>${currentUser}: ${msg}</li>`;
+      ul.innerHTML += `<li class="message other-message">${currentUser}: ${msg}</li>`;
+      ul.scrollTop = ul.scrollHeight
     });
 
     function enviar() {
       const input = document.getElementById("message-input");
       if (input) {
-        socket.emit("message", input.value);
-        input.value = "";
+        const userMessage = input.value
+        socket.emit("message", userMessage);
+        const ul = document.querySelector("ul")
+
+        ul.innerHTML += <li class="message user-message">${userMessage}</li>
+        ul.scrollTop = ul.scrollHeight
+        input.value = ""
       } else {
         alert("Por favor, digite uma mensagem.");
       }
