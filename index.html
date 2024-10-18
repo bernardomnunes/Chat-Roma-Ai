@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat.AI</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <!-- Tela de login -->
+    <div
+      id="login-container"
+      class="d-flex justify-content-center align-items-center vh-100"
+    >
+      <div class="card p-4" style="width: 18rem">
+        <h3 class="text-center mb-3">Login</h3>
+        <input type="text" id="username" placeholder="Digite seu nome" />
+        <button class="btn btn-primary mt-3 w-100" onclick="login()">
+          Entrar
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de chat -->
+    <div id="chat-container" class="d-none container mt-4">
+      <h4>Chat - Oi, <span id="user-name"></span>!</h4>
+      <ul id="message-container"></ul>
+      <input type="text" id="message-input" placeholder="Digite sua mensagem" />
+      <button class="btn btn-success mt-2 w-100" onclick="enviar()">
+        Enviar
+      </button>
+    </div>
+  </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.0/socket.io.js"></script>
+  <script>
+    const socket = io("http://localhost:3000/");
+
+    socket.on("connect", () => {
+      console.log("Conectado ao servidor ");
+    });
+
+    socket.on("message", (msg) => {
+      console.log(msg);
+      const ul = document.querySelector("ul");
+      ul.innerHTML += `<li>${currentUser}: ${msg}</li>`;
+    });
+
+    function enviar() {
+      const input = document.getElementById("message-input");
+      if (input) {
+        socket.emit("message", input.value);
+        input.value = "";
+      } else {
+        alert("Por favor, digite uma mensagem.");
+      }
+    }
+
+    document
+      .getElementById("message-input")
+      .addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          enviar();
+        }
+      });
+
+    // daqui pra cima codigo do professor
+    let currentUser = "";
+
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      if (username) {
+        currentUser = username;
+        document.getElementById("user-name").textContent = currentUser;
+        document.getElementById("login-container").classList.add("d-none");
+        document.getElementById("chat-container").classList.remove("d-none");
+      } else {
+        alert("Por favor, digite um nome.");
+      }
+    }
+
+    document.getElementById("username").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        login();
+      }
+    });
+  </script>
+</html>
