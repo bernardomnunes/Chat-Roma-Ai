@@ -10,8 +10,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^1.7.9",
+=======
+    "dotenv": "^16.4.5",
+>>>>>>> aff2235b5b6094e7085a358f7b6dbab5765682c2
     "express": "^4.21.1",
+    "openai": "^4.70.2",
     "socket.io": "^4.8.0",
     "ws": "^8.18.0"
   }
