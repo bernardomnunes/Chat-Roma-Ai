@@ -4,9 +4,7 @@ const socketio = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-<<<<<<< HEAD
 const axios = require("axios");
-=======
 
 // Importa o cliente da OpenAI
 const { Configuration, OpenAIApi } = require("openai");
@@ -33,7 +31,6 @@ async function callOpenAI() {
 
 // Executa a função
 callOpenAI();
->>>>>>> aff2235b5b6094e7085a358f7b6dbab5765682c2
 
 io.on("connection", (socket) => {
   console.log("usuario conectado " + socket.id);
